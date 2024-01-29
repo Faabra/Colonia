@@ -73,7 +73,7 @@ public class Main {
         //Compta les iteracions fins trobar la generació estable
         int generacio = 1;
         //Array que guarda l'anterior generació
-        int [][] coloniaAbans = null;
+        int [][] coloniaAbans;
         //Bucle que s'executa fins que dos Arrays són iguals
         while (true) {
             System.out.println("Generació " + generacio);
