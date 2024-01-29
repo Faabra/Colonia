@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -7,6 +8,7 @@ public class Main {
         int[][] colonia = new int[a][b];
         int[][] coloniaRandom = generarColonia(colonia);
         mostrarArray(coloniaRandom);
+        int[][] coloniaEstable = buclarGeneracions(coloniaRandom);
     }
 
     /**
@@ -38,6 +40,7 @@ public class Main {
         Random random = new Random();
         return random.nextInt(2);
     }
+
     /**
      * Funció que mostra el Array
      *
@@ -58,4 +61,43 @@ public class Main {
         }
         System.out.println("");
     }
-}
+
+    /**
+     * Funció on és buclen les colónies fins ser estables,
+     * compta generacions i crida altres funcions per ajudar
+     *
+     * @param coloniaProcesada Colonia generada de forma aleatòria
+     * @return coloniaEstable
+     */
+    public static int[][] buclarGeneracions(int[][] coloniaProcesada) {
+        //Compta les iteracions fins trobar la generació estable
+        int generacio = 1;
+        //Array que guarda l'anterior generació
+        int [][] coloniaAbans = null;
+        //Bucle que s'executa fins que dos Arrays són iguals
+        while (true) {
+            System.out.println("Generació " + generacio);
+            /*
+            * RESUM: Crea un Array exactament igual que no rep cap modificació
+            * .stream: Sequència d'elements que pot ser processada de manera sequèncial/paral·lela
+            * .map(int[] : : clone): Transforma cada element d'un Stream. Amb int clone, és
+            * fa una copia exacta del Array
+            * .toArray(int[][] : : new): Crea un Array bidimensional amb les dades clonades
+            *
+            */
+            coloniaAbans = Arrays.stream(coloniaProcesada).map(int[]::clone).toArray(int[][]::new);
+            //Cridem funció
+            Creixement(coloniaProcesada);
+            //És comprova que els dos Arrays siguin iguals
+            if (Arrays.deepEquals(coloniaProcesada, coloniaAbans)) {
+                //Tanca bucle
+                break;
+            }
+            generacio++;
+        }
+        return coloniaProcesada;
+    }
+    public static int[][] Creixement(int[][] coloniaProce) {
+        return coloniaProce;
+    }
+    }
