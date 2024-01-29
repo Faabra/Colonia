@@ -6,6 +6,7 @@ public class Main {
         int b = 6;
         int[][] colonia = new int[a][b];
         int[][] coloniaRandom = generarColonia(colonia);
+        mostrarArray(coloniaRandom);
     }
 
     /**
@@ -36,5 +37,25 @@ public class Main {
     public static int randomBacteri() {
         Random random = new Random();
         return random.nextInt(2);
+    }
+    /**
+     * Funció que mostra el Array
+     *
+     * @param coloniaMostrar Array que és mostrarà
+     */
+    public static void mostrarArray(int[][] coloniaMostrar) {
+        //Doble for per mostrar el Array
+        for (int[] i : coloniaMostrar) {
+            System.out.print(" [");
+            for (int j : i) {
+                System.out.print(i[j]);
+                //Posa coma a tots els valors excepte a l'últim de cada fila
+                if (j < coloniaMostrar.length - 1) {
+                    System.out.print(",");
+                }
+            }
+            System.out.println("]");
+        }
+        System.out.println("");
     }
 }
