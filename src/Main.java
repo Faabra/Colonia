@@ -124,7 +124,7 @@ public class Main {
                 coloniaExportar[i][j] = valor;
             }
         }
-        return coloniaExportar;
+        return coloniaExportar; //Retorna valors
     }
     public static int valorarVeins (int valor)  {
         return valor;
