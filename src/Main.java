@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Arrays;
 
 public class Main {
+    public static final int TAMANY = 6;
     public static void main(String[] args) {
         int a = 6;
         int b = 6;
@@ -73,18 +74,18 @@ public class Main {
         //Compta les iteracions fins trobar la generació estable
         int generacio = 1;
         //Array que guarda l'anterior generació
-        int [][] coloniaAbans;
+        int[][] coloniaAbans;
         //Bucle que s'executa fins que dos Arrays són iguals
         while (true) {
             System.out.println("Generació " + generacio);
             /*
-            * RESUM: Crea un Array exactament igual que no rep cap modificació
-            * .stream: Sequència d'elements que pot ser processada de manera sequèncial/paral·lela
-            * .map(int[] : : clone): Transforma cada element d'un Stream. Amb int clone, és
-            * fa una copia exacta del Array
-            * .toArray(int[][] : : new): Crea un Array bidimensional amb les dades clonades
-            *
-            */
+             * RESUM: Crea un Array exactament igual que no rep cap modificació
+             * .stream: Sequència d'elements que pot ser processada de manera sequèncial/paral·lela
+             * .map(int[] : : clone): Transforma cada element d'un Stream. Amb int clone, és
+             * fa una copia exacta del Array
+             * .toArray(int[][] : : new): Crea un Array bidimensional amb les dades clonades
+             *
+             */
             coloniaAbans = Arrays.stream(coloniaProcesada).map(int[]::clone).toArray(int[][]::new);
             //Cridem funció
             Creixement(coloniaProcesada);
@@ -97,7 +98,35 @@ public class Main {
         }
         return coloniaProcesada;
     }
-    public static int[][] Creixement(int[][] coloniaProce) {
-        return coloniaProce;
+
+    /**
+     * Funció que rep un Array i modifica valor per valor, segons
+     * les condicions de "valorarVeins"
+     * @param coloniaImportada Colonia anterior que serà modificada
+     * @return Array modificada
+     */
+    public static int[][] Creixement(int[][] coloniaImportada) {
+        //Definim variables
+        //Valor original
+        int valorTemporal = 0;
+        //Valor a modificar
+        int valor = 0;
+        //Array que és modificarà
+        int [][] coloniaExportar = new int [TAMANY][TAMANY];
+        //Doble for per modificar valors
+        for (int i = 0; i < coloniaImportada.length; i++)   {
+            for (int j = 0; j < coloniaImportada.length; j++) {
+                //Extreu valor original
+                valorTemporal = coloniaImportada[i][j];
+                //Modifica i retorna valor
+                valor = valorarVeins(valorTemporal);
+                //Afegeix valor a matriu buida
+                coloniaExportar[i][j] = valor;
+            }
+        }
+        return coloniaExportar;
     }
+    public static int valorarVeins (int valor)  {
+        return valor;
     }
+}
