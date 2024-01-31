@@ -2,13 +2,14 @@ import java.util.Random;
 import java.util.Arrays;
 
 public class Main {
+    public static final int TAMANY = 6;
+
     public static void main(String[] args) {
-        int a = 6;
-        int b = 6;
-        int[][] colonia = new int[a][b];
+        int[][] colonia = new int[TAMANY][TAMANY];
         int[][] coloniaRandom = generarColonia(colonia);
         mostrarArray(coloniaRandom);
         int[][] coloniaEstable = buclarGeneracions(coloniaRandom);
+        mostrarArray(coloniaEstable);
     }
 
     /**
@@ -73,31 +74,104 @@ public class Main {
         //Compta les iteracions fins trobar la generació estable
         int generacio = 1;
         //Array que guarda l'anterior generació
-        int [][] coloniaAbans;
+        int[][] coloniaAbans = new int[TAMANY][TAMANY];
         //Bucle que s'executa fins que dos Arrays són iguals
         while (true) {
-            System.out.println("Generació " + generacio);
             /*
-            * RESUM: Crea un Array exactament igual que no rep cap modificació
-            * .stream: Sequència d'elements que pot ser processada de manera sequèncial/paral·lela
-            * .map(int[] : : clone): Transforma cada element d'un Stream. Amb int clone, és
-            * fa una copia exacta del Array
-            * .toArray(int[][] : : new): Crea un Array bidimensional amb les dades clonades
-            *
-            */
-            coloniaAbans = Arrays.stream(coloniaProcesada).map(int[]::clone).toArray(int[][]::new);
+             * RESUM: Crea un Array exactament igual que no rep cap modificació
+             * .stream: Sequència d'elements que pot ser processada de manera sequèncial/paral·lela
+             * .map(int[] : : clone): Transforma cada element d'un Stream. Amb int clone, és
+             * fa una copia exacta del Array
+             * .toArray(int[][] : : new): Crea un Array bidimensional amb les dades clonades
+             *
+             */
+            coloniaAbans = Creixement(coloniaProcesada);
             //Cridem funció
-            Creixement(coloniaProcesada);
+            System.out.println("Generació "+generacio);
+            mostrarArray(coloniaAbans);
             //És comprova que els dos Arrays siguin iguals
             if (Arrays.deepEquals(coloniaProcesada, coloniaAbans)) {
                 //Tanca bucle
+                System.out.println("Hem arribat a una generació estable amb "+generacio+" generacions.");
                 break;
             }
+            coloniaProcesada = coloniaAbans;
             generacio++;
         }
         return coloniaProcesada;
     }
-    public static int[][] Creixement(int[][] coloniaProce) {
-        return coloniaProce;
+
+    /**
+     * Funció que rep un Array i modifica valor per valor, segons
+     * les condicions de "valorarVeins"
+     *
+     * @param coloniaImportada Colonia anterior que serà modificada
+     * @return Array modificada
+     */
+    public static int[][] Creixement(int[][] coloniaImportada) {
+        //Definim variables
+        //Valor original
+        int valorTemporal = 0;
+        //Valor a modificar
+        int valor = 0;
+        //Array que és modificarà
+        int[][] coloniaExportar = new int[TAMANY][TAMANY];
+        //Doble for per modificar valors
+        for (int i = 0; i < coloniaImportada.length; i++) {
+            for (int j = 0; j < coloniaImportada.length; j++) {
+                //Extreu valor original
+                valorTemporal = coloniaImportada[i][j];
+                //Modifica i retorna valor
+                valor = procesVeins(coloniaImportada, i, j, valorTemporal);
+                //Afegeix valor a matriu buida
+                coloniaExportar[i][j] = valor;
+            }
+        }
+        return coloniaExportar;
     }
+
+    public static int procesVeins(int[][] coloniaProces, int i, int j, int valor) {
+        int veins = comptarVeins(coloniaProces, i, j, valor);
+        int valorModificat = valorarVeins(veins, valor);
+        return valorModificat;
     }
+
+    public static int valorarVeins(int veins, int valor) {
+        int valorImportat = 0;
+        switch (veins) {
+            case 0:
+            case 1:
+                valorImportat = 0;
+                break;
+            case 2:
+                if (valor == 1) {
+                    valorImportat = 1;
+                } else {
+                    valorImportat = 0;
+                }
+                break;
+            case 3:
+                valorImportat = 1;
+                break;
+            default:
+                valorImportat = 0;
+                break;
+        }
+        return valorImportat;
+    }
+
+    public static int comptarVeins(int[][] coloniaProces, int i, int j, int valor) {
+        int veins = 0;
+        for (int x = i - 1; x <= i + 1; x++) {
+            for (int y = j - 1; y <= j + 1; y++) {
+                if (x == i && y == j) {
+                    continue;
+                }
+                if (x >= 0 && x <= 5 && i < coloniaProces.length && y >= 0 && y <= 5 && y < coloniaProces[0].length && coloniaProces[x][y] == 1) {
+                    veins++;
+                }
+            }
+        }
+        return veins;
+    }
+}
