@@ -87,14 +87,17 @@ public class Main {
              */
             coloniaAbans = Creixement(coloniaProcesada);
             //Cridem funció
-            System.out.println("Generació "+generacio);
-            mostrarArray(coloniaAbans);
             //És comprova que els dos Arrays siguin iguals
             if (Arrays.deepEquals(coloniaProcesada, coloniaAbans)) {
                 //Tanca bucle
-                System.out.println("Hem arribat a una generació estable amb "+generacio+" generacions.");
+                System.out.println("Hem arribat a una colònia estable amb "+generacio+" generacions.");
                 break;
             }
+            System.out.println("Generació "+generacio);
+            System.out.println("Original: ");
+            mostrarArray(coloniaProcesada);
+            System.out.println("Modificada: ");
+            mostrarArray(coloniaAbans);
             coloniaProcesada = coloniaAbans;
             generacio++;
         }
